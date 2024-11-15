@@ -2,22 +2,26 @@
 
 #include "Scene.h"
 
-class DummyEntity;
+class PlantEntity;
+class ZombieEntity;
 
 class SampleScene : public Scene
 {
-	DummyEntity* pEntity1;
-	DummyEntity* pEntity2;
+	PlantEntity* pPlant1;
+	PlantEntity* pPlant2;
+	PlantEntity* pPlant3;
 
-	DummyEntity* pEntitySelected;
+	ZombieEntity* pZombie1;
+	ZombieEntity* pZombie2;
+	ZombieEntity* pZombie3;
+
+	ZombieEntity* pEntitySelected;
 
 private:
-	void TrySetSelectedEntity(DummyEntity* pEntity, int x, int y);
+	void TrySetSelectedEntity(ZombieEntity* pEntity, int x, int y);
 
 public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
 };
-
-

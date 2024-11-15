@@ -1,16 +1,46 @@
 #include "SampleScene.h"
 
-#include "DummyEntity.h"
+#include "PlantEntity.h"
+#include "ZombieEntity.h"
 
 #include "Debug.h"
 
 void SampleScene::OnInitialize()
 {
-	pEntity1 = CreateEntity<DummyEntity>(100, sf::Color::Red);
-	pEntity1->SetPosition(100, 100);
+	pPlant1 = CreateEntity<PlantEntity>(30, sf::Color::Green);
+	pPlant1->SetPosition(100, 150);
+	pPlant1->SetCapacity(6);
+	pPlant1->SetAmmoLeft(6);
+	pPlant1->SetHP(1);
 
-	pEntity2 = CreateEntity<DummyEntity>(50, sf::Color::Green);
-	pEntity2->SetPosition(500, 500);
+	pPlant2 = CreateEntity<PlantEntity>(30, sf::Color::Green);
+	pPlant2->SetPosition(100, 300);
+	pPlant2->SetCapacity(6);
+	pPlant2->SetAmmoLeft(6);
+	pPlant2->SetHP(1);
+
+	pPlant3 = CreateEntity<PlantEntity>(30, sf::Color::Green);
+	pPlant3->SetPosition(100, 450);
+	pPlant3->SetCapacity(6);
+	pPlant3->SetAmmoLeft(6);
+	pPlant3->SetHP(1);
+
+
+
+	pZombie1 = CreateEntity<ZombieEntity>(30, sf::Color::Yellow);
+	pZombie1->SetPosition(1000, 150);
+	pZombie1->SetHP(7);
+	pZombie1->GoToPosition(pPlant1->GetPosition().x, (pPlant1->GetPosition().y), 100.0f);
+
+	pZombie2 = CreateEntity<ZombieEntity>(30, sf::Color::Yellow);
+	pZombie2->SetPosition(1000, 300);
+	pZombie2->SetHP(7);
+	pZombie2->GoToPosition(pPlant2->GetPosition().x, (pPlant2->GetPosition().y), 100.0f);
+
+	pZombie3 = CreateEntity<ZombieEntity>(30, sf::Color::Yellow);
+	pZombie3->SetPosition(1000, 450);
+	pZombie3->SetHP(7);
+	pZombie3->GoToPosition(pPlant3->GetPosition().x, (pPlant3->GetPosition().y), 100.0f);
 
 	pEntitySelected = nullptr;
 }
@@ -22,20 +52,19 @@ void SampleScene::OnEvent(const sf::Event& event)
 
 	if (event.mouseButton.button == sf::Mouse::Button::Right)
 	{
-		TrySetSelectedEntity(pEntity1, event.mouseButton.x, event.mouseButton.y);
-		TrySetSelectedEntity(pEntity2, event.mouseButton.x, event.mouseButton.y);
+		TrySetSelectedEntity(pZombie1, event.mouseButton.x, event.mouseButton.y);
 	}
 
 	if (event.mouseButton.button == sf::Mouse::Button::Left)
 	{
-		if (pEntitySelected != nullptr) 
+		if (pEntitySelected != nullptr)
 		{
 			pEntitySelected->GoToPosition(event.mouseButton.x, event.mouseButton.y, 100.f);
 		}
 	}
 }
 
-void SampleScene::TrySetSelectedEntity(DummyEntity* pEntity, int x, int y)
+void SampleScene::TrySetSelectedEntity(ZombieEntity* pEntity, int x, int y)
 {
 	if (pEntity->IsInside(x, y) == false)
 		return;
@@ -45,9 +74,9 @@ void SampleScene::TrySetSelectedEntity(DummyEntity* pEntity, int x, int y)
 
 void SampleScene::OnUpdate()
 {
-	if(pEntitySelected != nullptr)
+	if (pEntitySelected != nullptr)
 	{
-		sf::Vector2f position = pEntitySelected->GetPosition();
+		sf::Vector2f position = pEntitySelected->GetPosition(0.5f, 0.5f);
 		Debug::DrawCircle(position.x, position.y, 10, sf::Color::Blue);
 	}
 }
